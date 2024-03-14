@@ -31,7 +31,6 @@ def create_database():
 
 create_database()
 
-
 class Home:
     def __init__(self, root):
         self.root = root
@@ -77,14 +76,17 @@ class Main:
         self.admin_name_entry.place(x=200, y=270)
         self.admin_pass = Label(self.right, text='PASSWORD', bg='steel blue', fg='white', font=fonts, width=9)
         self.admin_pass.place(x=100, y=300)
-        self.admin_pass_entry = Entry(self.right, width=10, font=fonts)
+        self.admin_pass_entry = Entry(self.right, width=10, font=fonts, show='*')  # Password is hidden by default
         self.admin_pass_entry.place(x=200, y=300)
 
+        self.admin_pass_show_btn = Button(self.right, text='Show Password', font=fonts, command=self.show_admin_password)
+        self.admin_pass_show_btn.place(x=170, y=350)
+
         self.admin_login_btn = Button(self.right, text='LOGIN', font=fonts, command=self.admin_login)
-        self.admin_login_btn.place(x=170, y=350)
+        self.admin_login_btn.place(x=150, y=400)
 
         self.admin_sign_up_btn = Button(self.right, text='SIGN UP', font=fonts, command=self.admin_signup)
-        self.admin_sign_up_btn.place(x=270, y=350)
+        self.admin_sign_up_btn.place(x=250, y=400)
 
         self.left = Frame(self.root, width=900, height=700, bg='wheat3')
         self.left.place(x=450, y=0)
@@ -105,14 +107,17 @@ class Main:
 
         self.student_pass = Label(self.left, text='PASSWORD', bg='steel blue', fg='white', font=fonts, width=9)
         self.student_pass.place(x=100, y=300)
-        self.student_pass_entry = Entry(self.left, width=10, font=fonts)
+        self.student_pass_entry = Entry(self.left, width=10, font=fonts, show='*')  # Password is hidden by default
         self.student_pass_entry.place(x=200, y=300)
 
+        self.student_pass_show_btn = Button(self.left, text='Show Password', font=fonts, command=self.show_student_password)
+        self.student_pass_show_btn.place(x=170, y=350)
+
         self.student_login_btn = Button(self.left, text='LOGIN', font=fonts, command=self.student_login)
-        self.student_login_btn.place(x=170, y=350)
+        self.student_login_btn.place(x=150, y=400)
 
         self.student_sign_up_btn = Button(self.left, text='SIGN UP', font=fonts, command=self.student_signup)
-        self.student_sign_up_btn.place(x=270, y=350)
+        self.student_sign_up_btn.place(x=250, y=400)
 
         self.main_logout_btn = Button(self.left, text='BACK', font=fonts, command=self.Main_logout)
         self.main_logout_btn.place(x=820, y=650)
@@ -184,6 +189,21 @@ class Main:
             messagebox.showinfo('SUCCESS', 'Student signed up successfully')
         conn.close()
 
+    def show_admin_password(self):
+        # Toggle password visibility for admin password entry
+        current_state = self.admin_pass_entry.cget('show')
+        if current_state == '*':
+            self.admin_pass_entry.config(show='')
+        else:
+            self.admin_pass_entry.config(show='*')
+
+    def show_student_password(self):
+        # Toggle password visibility for student password entry
+        current_state = self.student_pass_entry.cget('show')
+        if current_state == '*':
+            self.student_pass_entry.config(show='')
+        else:
+            self.student_pass_entry.config(show='*')
 
 class Admin:
     def __init__(self, root):
@@ -214,13 +234,16 @@ class Admin:
         self.event_list.bind('<<ListboxSelect>>', self.show_participants)
 
         self.add_event_btn = Button(self.right, text='Add Event', font=fonts, command=self.add_event_window)
-        self.add_event_btn.place(x=315, y=500)
+        self.add_event_btn.place(x=215, y=500)
 
         self.add_participant_btn = Button(self.right, text='Add Participant', font=fonts, command=self.add_participant_window)
         self.add_participant_btn.place(x=185, y=550)
 
         self.remove_participant_btn = Button(self.right, text='Remove Participant', font=fonts, command=self.remove_participant_window)
         self.remove_participant_btn.place(x=370, y=550)
+
+        self.remove_event_btn = Button(self.right, text='Clear Events', font=fonts, command=self.remove_event_window)
+        self.remove_event_btn.place(x=400, y=500)
 
         self.admin_logout_btn = Button(self.right, text='LOGOUT', font=fonts, command=self.admin_logout)
         self.admin_logout_btn.place(x=820, y=500)
@@ -232,7 +255,7 @@ class Admin:
         c.execute("SELECT * FROM event")
         events = c.fetchall()
         for event in events:
-            self.event_list.insert('end', f"{event[1]} - {event[2]} - {event[3]}")
+            self.event_list.insert(END, f"{event[1]} - {event[2]} - {event[3]}")
         conn.close()
 
     def show_participants(self, event):
@@ -356,6 +379,44 @@ class Admin:
         else:
             messagebox.showerror('Error', 'Please fill in all fields.')
 
+    def remove_event_window(self):
+        selected_event = self.event_list.get(self.event_list.curselection())
+        if not selected_event:
+            messagebox.showerror('Error', 'Please select an event.')
+            return
+
+        self.remove_event_window = Toplevel(self.root)
+        self.remove_event_window.title('Remove Event')
+        self.remove_event_window.geometry('600x400')
+        self.remove_event_window.grab_set()
+
+        self.confirm_label = Label(self.remove_event_window, text=f'Are you sure you want to remove {selected_event}?', font=fonts)
+        self.confirm_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
+
+        self.remove_event_button = Button(self.remove_event_window, text='Confirm', font=fonts, command=lambda: self.remove_event(selected_event))
+        self.remove_event_button.grid(row=1, column=0, padx=10, pady=10)
+
+        self.cancel_button = Button(self.remove_event_window, text='Cancel', font=fonts, command=self.remove_event_window.destroy)
+        self.cancel_button.grid(row=1, column=1, padx=10, pady=10)
+
+    def remove_event(self, selected_event):
+        selected_event_index = self.event_list.curselection()
+        if selected_event_index:
+            selected_event = self.event_list.get(selected_event_index)
+            conn = sqlite3.connect('college_events.db')
+            c = conn.cursor()
+            c.execute("DELETE FROM event WHERE event_name = ?", (selected_event,))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo('Success', 'Event removed successfully.')
+            
+            # Update the event list after deleting the event from the database
+            self.populate_events()  # Update the event list
+            self.event_list.delete(ANCHOR)  # Delete the selected item from the listbox
+            self.remove_event_window.destroy()
+        else:
+            messagebox.showerror('Error', 'Please select an event to remove.')
+
     def admin_logout(self):
         self.right.destroy()
         admin_obj = Main(root)
@@ -384,15 +445,14 @@ class Student:
 
         self.event_list.config(yscrollcommand=scrollbar.set)
 
-        self.populate_events()
         self.event_list.bind('<<ListboxSelect>>', self.show_participants)
-
+        self.populate_events()
 
         self.student_logout_btn = Button(self.right, text='LOGOUT', font=fonts, command=self.student_logout)
         self.student_logout_btn.place(x=820, y=500)
 
     def populate_events(self):
-        self.event_list.delete(0, END)  # Clear existing items in the list
+        self.event_list.delete(0, END)
         conn = sqlite3.connect('college_events.db')
         c = conn.cursor()
         c.execute("SELECT * FROM event")
@@ -415,7 +475,7 @@ class Student:
 
     def student_logout(self):
         self.right.destroy()
-        admin_obj = Main(root)
+        student_obj = Main(root)
 
 home_obj = Home(root)
 root.mainloop()
