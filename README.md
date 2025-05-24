@@ -17,7 +17,7 @@ A desktop application for managing and participating in campus events.
    ```
 
 4. The executable will be created in the `deployment` directory
-<<<<<<< HEAD
+
 
 ## Running the Application
 
@@ -84,4 +84,4 @@ A desktop application for managing and participating in campus events.
 - Windows 10 or higher
 - 4GB RAM minimum
 - 100MB free disk space
->>>>>>> a19f6d2981c8099a595600c5cdc9ae5953a4dc02
+
