@@ -1,6 +1,7 @@
 # Campus Event Scheduler
 
-A desktop application for managing and participating in campus events.
+A Python-based desktop application with a MySQL backend to help universities and colleges
+organize and manage campus events.
 
 ## Deployment Instructions
 
