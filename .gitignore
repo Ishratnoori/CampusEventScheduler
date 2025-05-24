@@ -17,9 +17,6 @@ __pycache__/
 *.spec
 *.egg-info/
 
-# Database files
-*.db
-
 # Credentials
 remembered_credentials.json
 
