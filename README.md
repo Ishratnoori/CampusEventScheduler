@@ -1,22 +1,52 @@
-OVERVIEW:
+# Campus Event Scheduler
 
-   A campus event scheduler project is a software application or system
-designed to help universities, colleges, or other edu cational institutions plan,
-organize, and manage various events and activities that take place on their
-campuses.
+A desktop application for managing and participating in campus events.
 
-   This project typically involves the development of a web-based or mobile app
-platform that provides a user-friendly interface for both event organizers and
-attendees.
+## Deployment Instructions
 
-* A campus event scheduler project is a software application or system designed to assist universities, colleges, or other educational institutions in planning, organizing, and managing various events and activities that occur on their campuses.
+1. Install Python 3.8 or higher from [python.org](https://www.python.org/downloads/)
 
-* This project typically involves the development of a web-based or mobile app platform that offers a user-friendly interface for both event organizers and attendees. 
+2. Install required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-* By utilizing such a system, educational institutions can streamline their event planning processes, improve communication among event organizers, and enhance the overall experience for event attendees.
+3. Run the deployment script:
+   ```bash
+   python deploy.py
+   ```
 
-OUTLINE:
-      Here's an outline of some of the main components such a system might include:
+4. The executable will be created in the `deployment` directory
 
-1.User Authentication and Profiles: Users should be able to create accounts, log in securely, and manage their profiles. This includes different user roles such as administrators, event organizers, and attendees.
-2.Event Creation and Management: Event organizers should be able to create new events, specify details such as event name, event time, event location/Venue.
+## Running the Application
+
+1. Navigate to the `deployment` directory
+2. Double-click `CampusEventScheduler.exe`
+
+## Default Login Credentials
+
+### Admin
+- Username: admin
+- Password: admin123
+
+### Student
+- Register a new account using the "SIGN UP" button
+
+## Features
+
+- Admin Dashboard
+  - Create and manage events
+  - View event registrations
+  - Export registration data
+
+- Student Dashboard
+  - View available events
+  - Register for events
+  - View registered events
+
+## System Requirements
+
+- Windows 10 or higher
+- 4GB RAM minimum
+- 100MB free disk space
+
